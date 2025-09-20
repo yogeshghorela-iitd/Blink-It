@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Blinkit Orders Notification</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #f7e200;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    button.trigger {
+      padding: 14px 22px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #111;
+      color: #fff;
+    }
+    button.trigger:hover {
+      background: #333;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+      width: 420px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .popup img.logo {
+      width: 100px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+    }
+
+    .popup h2 {
+      margin: 10px 0;
+      font-size: 22px;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .order-card {
+      text-align: left;
+      background: #f9f9f9;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 14px;
+      font-size: 15px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .order-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .order-card strong {
+      color: #111;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      margin: 0 5px;
+      padding: 12px 0;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      font-size: 15px;
+    }
+
+    .accept {
+      background: #28a745;
+      color: #fff;
+    }
+    .accept:hover { background: #218838; }
+
+    .reject {
+      background: #dc3545;
+      color: #fff;
+    }
+    .reject:hover { background: #b02a37; }
+  </style>
+</head>
+<body>
+  <button class="trigger" onclick="showPopup()">Show Orders</button>
+
+  <div class="overlay" id="overlay">
+    <div class="popup" id="popup">
+      <img class="logo" src="https://cdn.brandfetch.io/idqFC5Rk0D/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1700856649486" alt="Blinkit Logo">
+      <h2>Orders Received</h2>
+
+      <div class="order-card">
+        <p><strong>Item:</strong> Scientific Calculator</p>
+        <p><strong>Venue:</strong> Girnar Hostel</p>
+        <p><strong>Mo.:</strong> 9999199919</p>
+      </div>
+
+      <div class="order-card">
+        <p><strong>Item:</strong> Umbrella</p>
+        <p><strong>Venue:</strong> Jia Sarai</p>
+        <p><strong>Mo.:</strong> 8888888888</p>
+      </div>
+
+      <div class="order-card">
+        <p><strong>Item:</strong> Coconut</p>
+        <p><strong>Venue:</strong> Aravali Hostel</p>
+        <p><strong>Mo.:</strong> 7777777777</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn accept" onclick="hidePopup()">Accept All</button>
+        <button class="btn reject" onclick="hidePopup()">Reject All</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const popup = document.getElementById("popup");
+    const orders = document.querySelectorAll(".order-card");
+
+    function showPopup() {
+      overlay.style.display = "flex";
+
+      setTimeout(() => {
+        popup.classList.add("show");
+        orders.forEach((order, i) => {
+          setTimeout(() => order.classList.add("show"), i * 150);
+        });
+      }, 200);
+    }
+
+    function hidePopup() {
+      orders.forEach(order => order.classList.remove("show"));
+      popup.classList.remove("show");
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 600);
+    }
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) hidePopup();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") hidePopup();
+    });
+  </script>
+</body>
+</html>
